@@ -2,6 +2,8 @@ package com.example.blogapp.controller;
 
 import com.example.blogapp.dto.AddressDto;
 import com.example.blogapp.service.AddressService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -22,6 +24,19 @@ public class AddressController {
     }
 
     @PostMapping("/address")
+    @Operation(
+            description = "Endpoint for adding address",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Invalid credentials/Unauthorized",
+                            responseCode = "403"
+                    )
+            }
+    )
     public Map<String, Object> addAddress(@Valid @RequestBody AddressDto addressDto, BindingResult bindingResult) {
         Map<String, Object> response = new HashMap<>();
 
@@ -44,16 +59,63 @@ public class AddressController {
     }
 
     @GetMapping("/address")
+    @Operation(
+            description = "Endpoint for listing all address",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Invalid credentials/Unauthorized",
+                            responseCode = "403"
+                    )
+            }
+    )
     public List<AddressDto> getAllAddress() {
         return this.addressService.getAddress();
     }
 
     @PutMapping("/address/{id}")
+    @Operation(
+            description = "Endpoint for updating address",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Invalid credentials/Unauthorized",
+                            responseCode = "403"
+                    ),
+                    @ApiResponse(
+                            description = "Not found",
+                            responseCode = "404"
+                    )
+            }
+    )
     public AddressDto updateAddress(@RequestBody AddressDto addressDto, @PathVariable Integer id) {
         return this.addressService.updateAddress(addressDto, id);
     }
 
     @DeleteMapping("/address/{id}")
+    @Operation(
+            description = "Endpoint for deleting address",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Invalid credentials/Unauthorized",
+                            responseCode = "403"
+                    ),
+                    @ApiResponse(
+                            description = "Not found",
+                            responseCode = "404"
+                    )
+            }
+    )
     public Map<String, Object> deleteAddress(@PathVariable Integer id) {
         Map<String, Object> response = new HashMap<>();
 
@@ -66,6 +128,23 @@ public class AddressController {
     }
 
     @GetMapping("/address/{id}")
+    @Operation(
+            description = "Endpoint for getting single address",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Invalid credentials/Unauthorized",
+                            responseCode = "403"
+                    ),
+                    @ApiResponse(
+                            description = "Not found",
+                            responseCode = "404"
+                    )
+            }
+    )
     public AddressDto getSingleAddress(@PathVariable Integer id) {
         return this.addressService.getSingleAddress(id);
     }

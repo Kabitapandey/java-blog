@@ -27,7 +27,7 @@ public class UserDto {
 
     @NotBlank(message = "Email must be provided")
     @Email(message = "Invalid email format")
-    
+
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

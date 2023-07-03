@@ -5,6 +5,8 @@ import com.example.blogapp.dto.AuthRequest;
 import com.example.blogapp.dto.UserDto;
 import com.example.blogapp.service.JwtService;
 import com.example.blogapp.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,6 +37,19 @@ public class UserController {
     }
 
     @PostMapping("/user/add")
+    @Operation(
+            description = "Endpoint for adding users",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Invalid credentials/Unauthorized",
+                            responseCode = "403"
+                    )
+            }
+    )
     public Map<String, Object> addUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
         Map<String, Object> response = new HashMap<>();
 
@@ -56,17 +71,64 @@ public class UserController {
     }
 
     @GetMapping("/user")
+    @Operation(description = "Api endpoint to get all the users",
+            responses =
+                    {
+                            @ApiResponse(
+                                    description = "Success",
+                                    responseCode = "200"
+                            ),
+                            @ApiResponse(
+                                    description = "Invalid credentials/Unauthorized",
+                                    responseCode = "403"
+                            )
+                    }
+    )
     public List<UserDto> getAllUsers() {
         return this.userService.getUser();
     }
 
     @PutMapping("/user/{id}")
+    @Operation(description = "Api endpoint to update data of the user",
+            responses =
+                    {
+                            @ApiResponse(
+                                    description = "Success",
+                                    responseCode = "200"
+                            ),
+                            @ApiResponse(
+                                    description = "Invalid credentials/Unauthorized",
+                                    responseCode = "403"
+                            ),
+                            @ApiResponse(
+                                    description = "Not found",
+                                    responseCode = "404"
+                            )
+                    }
+    )
     public UserDto updateUser(@RequestBody UserDto userDto, @PathVariable Integer id) {
         return this.userService.updateUser(userDto, id);
     }
 
     @DeleteMapping("/user/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Operation(description = "Api endpoint to update delete of the user",
+            responses =
+                    {
+                            @ApiResponse(
+                                    description = "Success",
+                                    responseCode = "200"
+                            ),
+                            @ApiResponse(
+                                    description = "Invalid credentials/Unauthorized",
+                                    responseCode = "403"
+                            ),
+                            @ApiResponse(
+                                    description = "Not found",
+                                    responseCode = "404"
+                            )
+                    }
+    )
     public Map<String, Object> deleteUser(@PathVariable Integer id) {
         Map<String, Object> response = new HashMap<>();
 
@@ -78,11 +140,41 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Operation(description = "Api endpoint to list a single user",
+            responses =
+                    {
+                            @ApiResponse(
+                                    description = "Success",
+                                    responseCode = "200"
+                            ),
+                            @ApiResponse(
+                                    description = "Invalid credentials/Unauthorized",
+                                    responseCode = "403"
+                            ),
+                            @ApiResponse(
+                                    description = "Not found",
+                                    responseCode = "404"
+                            )
+                    }
+    )
     public UserDto getSingleUser(@PathVariable Integer id) {
         return this.userService.getSingleUser(id);
     }
 
     @PostMapping(value = "/user/authenticate")
+    @Operation(description = "Api endpoint to list a single user",
+            responses =
+                    {
+                            @ApiResponse(
+                                    description = "Success",
+                                    responseCode = "200"
+                            ),
+                            @ApiResponse(
+                                    description = "Invalid credentials/Unauthorized",
+                                    responseCode = "403"
+                            ),
+                    }
+    )
     public Map<String, Object> authenticate(@RequestBody AuthRequest authRequest) {
         Map<String, Object> response = new HashMap<>();
 
